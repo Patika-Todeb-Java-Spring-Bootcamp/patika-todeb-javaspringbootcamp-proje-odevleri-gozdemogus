@@ -8,7 +8,7 @@ public class WelcomeController {
 
     @GetMapping(name = "welcome", path = "/welcome")
     public String welcomeMessageAPI() {
-        String welcomeMsg = "<h1>Welcome to the Second Hand App</h1>";
+        String welcomeMsg = "<center><h1><FONT COLOR=\"#DB70DB\">Welcome to the Second Hand App</h1></center>";
         return welcomeMsg;
         //  ResponseModel responseModel = new ResponseModel();
         //  responseModel.setWelcomeMessage(welcomeMsg);

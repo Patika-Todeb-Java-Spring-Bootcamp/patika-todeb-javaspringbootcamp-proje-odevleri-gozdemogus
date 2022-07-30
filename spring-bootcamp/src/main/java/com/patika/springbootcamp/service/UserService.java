@@ -1,5 +1,6 @@
 package com.patika.springbootcamp.service;
 
+import com.patika.springbootcamp.exception.RecordNotFoundException;
 import com.patika.springbootcamp.model.dto.ProductDTO;
 import com.patika.springbootcamp.model.dto.UserDTO;
 import com.patika.springbootcamp.model.entity.Product;
@@ -21,6 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
+    private final UserMapper userMapper;
+
 
     //user buys product
     public User buyProduct(Long userId, Long productid) {
@@ -41,11 +44,12 @@ public class UserService {
 
     public User getById(Long id) {
         Optional<User> byId = userRepository.findById(id);
-        return byId.orElseThrow(() -> new RuntimeException(" not found!"));
+        //return byId.orElseThrow(() -> new RuntimeException(" not found!"));
+        return byId.orElseThrow(() -> new RecordNotFoundException(String.valueOf(id)));
     }
 
     public User create(UserDTO userDTO) {
-        User user = UserMapper.toEntity(userDTO);
+        User user = userMapper.toUser(userDTO);
         return userRepository.save(user);
     }
 

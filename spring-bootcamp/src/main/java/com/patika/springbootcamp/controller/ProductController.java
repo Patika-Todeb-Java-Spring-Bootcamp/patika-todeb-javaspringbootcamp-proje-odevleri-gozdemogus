@@ -1,39 +1,43 @@
 package com.patika.springbootcamp.controller;
 
 import com.patika.springbootcamp.model.dto.ProductDTO;
-
 import com.patika.springbootcamp.model.entity.Product;
+import com.patika.springbootcamp.model.mapper.ProductMapper;
 import com.patika.springbootcamp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/api/product")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductMapper productMapper;
 
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> allProducts = productService.getAllProducts();
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> allProducts = productService.getAllProducts();
         return ResponseEntity.ok(allProducts);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable("id") Long id) {
-        Product byId;
+        ProductDTO byIdDTO;
         try {
-            byId = productService.getById(id);
+            byIdDTO = productService.getById(id);
         } catch (RuntimeException exception) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(byId);
+        return ResponseEntity.status(HttpStatus.OK).body(byIdDTO);
     }
 
     @PostMapping("/create")
@@ -41,8 +45,9 @@ public class ProductController {
         Product respProduct = productService.create(productDTO);
         if (respProduct == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Course could not be created..");
+                    .body("Product could not be created..");
         }
+        // ProductDTO productDTO2 = productMapper.toProductDTO(respProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(respProduct);
     }
 
@@ -61,13 +66,14 @@ public class ProductController {
     @PutMapping("/{title}")
     public ResponseEntity updateProduct(
             @PathVariable String title,
-            @RequestBody ProductDTO course) {
-        Product update = productService.update(title, course);
+            @RequestBody Product product) {
+        Product update = productService.update(title, product);
         if (update == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Product could not be updated..");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(update);
+        ProductDTO productDTO = productMapper.toProductDTO(update);
+        return ResponseEntity.status(HttpStatus.OK).body(productDTO);
     }
 
 

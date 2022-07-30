@@ -2,25 +2,17 @@ package com.patika.springbootcamp.model.mapper;
 
 import com.patika.springbootcamp.model.dto.ProductDTO;
 import com.patika.springbootcamp.model.entity.Product;
+import org.mapstruct.Mapper;
 
-public class ProductMapper {
+import java.util.List;
 
-    public static ProductDTO toDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setTitle(product.getTitle());
-        productDTO.setDetails(product.getDetails());
-        productDTO.setBrand(product.getBrand());
-        productDTO.setPrice(product.getPrice());
-        return productDTO;
-    }
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
 
-    public static Product toEntity(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setTitle(productDTO.getTitle());
-        product.setDetails(productDTO.getDetails());
-        product.setBrand(productDTO.getBrand());
-        product.setPrice(productDTO.getPrice());
-        return product;
-    }
+    ProductDTO toProductDTO(Product product);
+
+    List<ProductDTO> toProductDTOs(List<Product> products);
+
+    Product toProduct(ProductDTO productDTO);
 
 }

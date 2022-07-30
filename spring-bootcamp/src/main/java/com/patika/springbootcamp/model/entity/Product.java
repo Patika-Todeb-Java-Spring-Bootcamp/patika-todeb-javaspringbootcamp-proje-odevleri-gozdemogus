@@ -1,9 +1,6 @@
 package com.patika.springbootcamp.model.entity;
 
-import com.patika.springbootcamp.model.enums.Category;
-import com.patika.springbootcamp.model.enums.Color;
-import com.patika.springbootcamp.model.enums.Size;
-import com.patika.springbootcamp.model.enums.Usage;
+import com.patika.springbootcamp.model.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,25 +18,28 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
     private String details;
     private double price;
     private int numberOfPeopleClicked;
     private int countOfLikes;
     private String brand;
-    @Enumerated
+    @Enumerated(EnumType.ORDINAL)
     private Usage usage;
-    @Enumerated
+    @Enumerated(EnumType.ORDINAL)
     private Size size;
-    @Enumerated
-    private Color color;
-    @Enumerated
+    @Enumerated(EnumType.ORDINAL)
+    private Colors colors;
+    @Enumerated(EnumType.ORDINAL)
     private Category category;
+    @Enumerated(EnumType.ORDINAL)
+    private SubCategory subCategory;
+
 
     @ManyToOne()
     private User seller;
 
     @ManyToOne()
     private User buyer;
+
 }

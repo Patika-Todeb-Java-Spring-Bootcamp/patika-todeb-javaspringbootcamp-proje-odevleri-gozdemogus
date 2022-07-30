@@ -1,10 +1,10 @@
 package com.patika.springbootcamp.controller;
 
 
-import com.patika.springbootcamp.model.dto.ProductDTO;
+import com.patika.springbootcamp.exception.RecordNotFoundException;
 import com.patika.springbootcamp.model.dto.UserDTO;
-import com.patika.springbootcamp.model.entity.Product;
 import com.patika.springbootcamp.model.entity.User;
+import com.patika.springbootcamp.model.mapper.UserMapper;
 import com.patika.springbootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    UserMapper userMapper;
 
     //buy product
     @PutMapping("/{userid}/buy/{product_id}")
@@ -36,26 +39,31 @@ public class UserController {
 
     //get all
     @GetMapping(path = "/all")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> allUsers = userService.getAllUsers();
-        return ResponseEntity.ok(allUsers);
+        List<UserDTO> userDTOs = userMapper.toUserDTOs(allUsers);
+        return ResponseEntity.ok(userDTOs);
     }
 
     //get particular user
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable("id") Long id) {
-        User byId;
-        try {
-            byId = userService.getById(id);
-        } catch (RuntimeException exception) {
-            return ResponseEntity.notFound().build();
+        // User byId;
+        //  try {
+        //      byId = userService.getById(id);
+        //  } catch (RuntimeException exception) {
+        //      return ResponseEntity.notFound().build();
+        //  }
+        User byId = userService.getById(id);
+        if (byId == null) {
+            throw new RecordNotFoundException(String.valueOf(id));
         }
         return ResponseEntity.status(HttpStatus.OK).body(byId);
     }
 
     //add new user
     @PostMapping("/create")
-    public ResponseEntity createNewProduct(@RequestBody UserDTO userDTO) {
+    public ResponseEntity createNewUser(@RequestBody UserDTO userDTO) {
         User respUser = userService.create(userDTO);
         if (respUser == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -13,11 +13,11 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-
     // JPQL
     Optional<Product> findProductByTitle(String title);
 
     Product findProductById(Long id);
+
 
     //   List<Optional<Product>> findAllByTitleAndPrice(String title);
 
