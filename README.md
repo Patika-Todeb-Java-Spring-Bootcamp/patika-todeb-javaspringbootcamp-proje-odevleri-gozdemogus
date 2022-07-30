@@ -42,7 +42,7 @@ Some method and body examples:
 
 | Type | Method |
 | ------ | ------ |
-| POST | localhost:2020/api/product/create |
+| POST | http://localhost:2020/api/product/create |
 
 ```
 {
@@ -56,7 +56,7 @@ Some method and body examples:
 ```
 | Type | Method |
 | ------ | ------ |
-| POST | localhost:2020/api/user/create |
+| POST | http://localhost:2020/api/user/create |
 
 ```
 {
