@@ -4,6 +4,8 @@ import com.patika.springbootcamp.model.dto.ProductDTO;
 import com.patika.springbootcamp.model.entity.Product;
 import com.patika.springbootcamp.model.mapper.ProductMapper;
 import com.patika.springbootcamp.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@Tag(name="Product", description="Includes product CRUD operations")
 @RequestMapping("/api/product")
 public class ProductController {
 
@@ -24,6 +27,7 @@ public class ProductController {
 
 
     @GetMapping(path = "/all")
+    @Operation(summary = "Get all products", method="GET")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<ProductDTO> allProducts = productService.getAllProducts();
         return ResponseEntity.ok(allProducts);

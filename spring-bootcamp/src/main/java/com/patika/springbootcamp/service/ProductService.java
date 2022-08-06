@@ -6,12 +6,14 @@ import com.patika.springbootcamp.model.mapper.ProductMapper;
 import com.patika.springbootcamp.repository.ProductRepository;
 import com.patika.springbootcamp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -20,7 +22,7 @@ public class ProductService {
 
 
     public List<ProductDTO> getAllProducts() {
-        List<ProductDTO> allCourses = productMapper.toProductDTOs(productRepository.findAll());
+        List<ProductDTO> allCourses = productMapper.toProductDTOList(productRepository.findAll());
         return allCourses;
     }
 
@@ -32,11 +34,13 @@ public class ProductService {
 
     public Product create(ProductDTO productDTO) {
         Product product = productMapper.toProduct(productDTO);
+        log.info("product saved. " + product.getId());
         return productRepository.save(product);
     }
 
     public void delete(Long id) {
-        getById(id);
+      ProductDTO deletedProduct =  getById(id);
+        log.info("product deleted. " + deletedProduct.getId());
         productRepository.deleteById(id);
     }
 
@@ -52,7 +56,7 @@ public class ProductService {
         //  if (!StringUtils.isEmpty(product.getDetails())) {
         //    updatedProduct.setDetails(product.getDetails());
         // }
-
+        log.info("product updated. " + updatedProduct.getId());
         return productRepository.save(updatedProduct);
     }
 

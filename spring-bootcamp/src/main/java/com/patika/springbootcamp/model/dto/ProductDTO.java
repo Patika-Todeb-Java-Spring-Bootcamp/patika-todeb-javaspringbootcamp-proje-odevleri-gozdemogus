@@ -1,9 +1,8 @@
 package com.patika.springbootcamp.model.dto;
 
-import com.patika.springbootcamp.model.enums.Category;
-import com.patika.springbootcamp.model.enums.Colors;
-import com.patika.springbootcamp.model.enums.Size;
-import com.patika.springbootcamp.model.enums.Usage;
+import com.patika.springbootcamp.model.entity.User;
+import com.patika.springbootcamp.model.enums.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
@@ -33,4 +32,12 @@ public class ProductDTO {
     private Colors colors;
     @Enumerated(EnumType.ORDINAL)
     private Category category;
+    private int numberOfPeopleClicked;
+    private int countOfLikes;
+    @Enumerated(EnumType.ORDINAL)
+    private SubCategory subCategory;
+    private User seller;
+    private User buyer;
+
+
 }

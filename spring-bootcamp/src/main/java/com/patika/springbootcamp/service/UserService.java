@@ -9,12 +9,14 @@ import com.patika.springbootcamp.model.mapper.UserMapper;
 import com.patika.springbootcamp.repository.ProductRepository;
 import com.patika.springbootcamp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -33,6 +35,7 @@ public class UserService {
         List<Product> productSet = user.getProductsBought();
         productSet.add(productByTitle);
         user.setProductsBought(productSet);
+log.info("user saved. " + user.getId());
         return userRepository.save(user);
     }
 
@@ -49,13 +52,15 @@ public class UserService {
     }
 
     public User create(UserDTO userDTO) {
-        User user = userMapper.toUser(userDTO);
+        User user = userMapper.toUser(userDTO, new User());
+        log.info("user created. " + user.getId());
         return userRepository.save(user);
     }
 
     public void delete(Long id) {
-        getById(id);
+      User deletedUser = getById(id);
         userRepository.deleteById(id);
+        log.info("user deleted. " + deletedUser.getId());
     }
 
     public User update(String username, UserDTO userDTO) {
@@ -69,7 +74,7 @@ public class UserService {
         if (!StringUtils.isEmpty(userDTO.getAbout())) {
             updatedUser.setAbout(userDTO.getAbout());
         }
-
+        log.info("user updated. " + updatedUser.getId());
         return userRepository.save(updatedUser);
     }
 
