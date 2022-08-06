@@ -69,3 +69,6 @@ Some method and body examples:
     "phone":"2727900888"
 }
 ```
+
+Swagger Documentation is available at http://localhost:2020/v3/api-docs
+
